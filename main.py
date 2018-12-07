@@ -10,10 +10,10 @@ from seam_carver import SeamCarver
 import os
 
 def main():
-    inputFilename = "input/castle.jpg"
-    outputWidth = 1426
-    outputHeight = 966
-    outputFilename = "output/castle_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
+    inputFilename = "input/iceberg.jpg"
+    outputWidth = 600
+    outputHeight = 400
+    outputFilename = "output/iceberg_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
 
 
     sC = SeamCarver(inputFilename, outputFilename, outputWidth, outputHeight, True)
