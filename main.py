@@ -8,7 +8,7 @@ from seam_carver import SeamCarver
 
 def main():
     inputFilename = "input/iceberg.jpg"
-    outputWidth = 500
+    outputWidth = 550
     outputHeight = 300
     outputFilename = "output/iceberg_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
 
