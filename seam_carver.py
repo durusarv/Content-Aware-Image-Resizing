@@ -74,10 +74,10 @@ class SeamCarver:
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[1])
             self.addSeam(leastEnergySeam)
-            self.percentDone = (count/self.delta)
-            if (self.percentDone >= self.prevPercentDone + 1):
-                self.prevPercentDone += 1
-                print(str(self.prevPercentDone) + "%")
+            self.percentDone = (self.count/self.delta)
+            if (self.percentDone >= self.prevPercentDone + 0.01):
+                self.prevPercentDone = round(self.percentDone, 2)
+                print(str(self.prevPercentDone * 100) + "%")
             count += 1
 
     def getEnergyMap(self):
@@ -156,8 +156,8 @@ class SeamCarver:
 
     def removeSeam(self, leastEnergySeam):
 
-        if (self.demo == True):
-            self.demoStepsVert(leastEnergySeam)
+        if (self.demo):
+            self.demoSteps(leastEnergySeam)
 
         row, col = self.outputImg.shape[: 2]
         output = np.zeros((row, col - 1, 3))
@@ -170,6 +170,8 @@ class SeamCarver:
 
     def addSeam(self, backtrack):
 
+        if (self.demo):
+            self.demoSteps(backtrack)
         row, col = self.outputImg.shape[: 2]
         output = np.zeros((row, col + 1, 3))
         outputImg = self.outputImg
@@ -197,6 +199,7 @@ class SeamCarver:
 
     def demoStepsVert(self, leastEnergySeam):
         row, col = self.outputImg.shape[: 2]
+        self.stepImg = np.copy(self.outputImg)
         outputStep = self.stepImg
         for r in range(row):
             c = leastEnergySeam[r]
