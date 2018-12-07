@@ -11,8 +11,8 @@ import os
 
 def main():
     inputFilename = "input/iceberg.jpg"
-    outputWidth = 600
-    outputHeight = 400
+    outputWidth = 555
+    outputHeight = 310
     outputFilename = "output/iceberg_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
 
 

@@ -75,11 +75,26 @@ class SeamCarver:
     """
     def removeSeams(self, seams):
         count = 0
+        
         while count < seams:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[0])
-            self.removeSeam(leastEnergySeam)
+            #self.removeSeam(leastEnergySeam)
+            
+            if (self.demo):
+                self.demoSteps(leastEnergySeam)
+
+            row, col = self.outputImg.shape[: 2]
+            output = np.zeros((row, col - 1, 3))
+            
+            for r in range(row):
+                c = leastEnergySeam[r]
+                for i in range(3):
+                    output[r, :, i] = np.delete(self.outputImg[r, :, i], [c])
+                    
+            self.outputImg = np.copy(output)
+            self.stepImg = np.copy(self.outputImg)
             self.percentDone = (self.count/self.delta)
             self.printPercentDone()
             count += 1
@@ -90,11 +105,34 @@ class SeamCarver:
     """
     def addSeams(self, seams):
         count = 0
+        
         while count < seams:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[1])
-            self.addSeam(leastEnergySeam)
+            
+            #self.addSeam(leastEnergySeam)
+            if (self.demo):
+                self.demoSteps(leastEnergySeam)
+                
+            row, col = self.outputImg.shape[: 2]
+            output = np.zeros((row, col + 1, 3))
+            outputImg = self.outputImg
+            
+            for currentRow in range(row):
+                currentColumn = leastEnergySeam[currentRow]
+                
+                for i in range(3):
+                    if currentColumn == 0:
+                        output[currentRow, currentColumn, i] = outputImg[currentRow, currentColumn, i]
+                        output[currentRow, currentColumn + 1, i] = np.average(outputImg[currentRow, currentColumn: currentColumn + 2, i])
+                        output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
+                    else:
+                        output[currentRow, :currentColumn, i] = outputImg[currentRow, :currentColumn, i]
+                        output[currentRow, currentColumn, i] = np.average(outputImg[currentRow, currentColumn - 1: currentColumn + 1, i])
+                        output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
+
+            self.outputImg = np.copy(output)
             self.percentDone = (self.count/self.delta)
             self.printPercentDone()
             count += 1
@@ -219,32 +257,6 @@ class SeamCarver:
                 output[r, :, i] = np.delete(self.outputImg[r, :, i], [c])
         self.outputImg = np.copy(output)
         self.stepImg = np.copy(self.outputImg)
-
-    """
-    addSeam
-    Adds pixel layer (seam) to the images
-    @params:    backtrack: Map of the lowest energy level seam in the image
-    after backtracking through the image (seam)
-    """
-    def addSeam(self, backtrack):
-        if (self.demo):
-            self.demoSteps(backtrack)
-        row, col = self.outputImg.shape[: 2]
-        output = np.zeros((row, col + 1, 3))
-        outputImg = self.outputImg
-        for currentRow in range(row):
-            currentColumn = backtrack[currentRow]
-            for i in range(3):
-                if currentColumn == 0:
-                    output[currentRow, currentColumn, i] = outputImg[currentRow, currentColumn, i]
-                    output[currentRow, currentColumn + 1, i] = np.average(outputImg[currentRow, currentColumn: currentColumn + 2, i])
-                    output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
-                else:
-                    output[currentRow, :currentColumn, i] = outputImg[currentRow, :currentColumn, i]
-                    output[currentRow, currentColumn, i] = np.average(outputImg[currentRow, currentColumn - 1: currentColumn + 1, i])
-                    output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
-
-        self.outputImg = np.copy(output)
 
     """
     outputImageToFile
