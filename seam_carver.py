@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author: durusarv and jdlips
+@author: Duruvan Saravanan (durusarv) and Jake Lipson (jdlips)
 """
 
 import numpy as np
@@ -61,7 +61,7 @@ class SeamCarver:
             self.outputWidth = np.size(self.outputImg, 1)
             self.stepImg = np.copy(self.outputImg)
             self.rotated = True
-            
+
             if rowSeams > 0:
                 self.removeSeams(rowSeams)
             elif rowSeams < 0:
@@ -73,23 +73,23 @@ class SeamCarver:
     """
     def removeSeams(self, seams):
         count = 0
-        
+
         while count < seams:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[0])
-            
+
             if (self.demo):
                 self.demoSteps(leastEnergySeam)
 
             row, col = self.outputImg.shape[: 2]
             output = np.zeros((row, col - 1, 3))
-            
+
             for currentRow in range(row):
                 currentColumn = leastEnergySeam[currentRow]
                 for i in range(3):
                     output[currentRow, :, i] = np.delete(self.outputImg[currentRow, :, i], [currentColumn])
-                    
+
             self.outputImg = np.copy(output)
             self.stepImg = np.copy(self.outputImg)
             self.percentDone = (self.count/self.delta)
@@ -102,7 +102,7 @@ class SeamCarver:
     """
     def addSeams(self, seams):
         count = 0
-        
+
         while count < seams:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
@@ -110,14 +110,14 @@ class SeamCarver:
 
             if (self.demo):
                 self.demoSteps(leastEnergySeam)
-                
+
             row, col = self.outputImg.shape[: 2]
             output = np.zeros((row, col + 1, 3))
             outputImg = self.outputImg
-            
+
             for currentRow in range(row):
                 currentColumn = leastEnergySeam[currentRow]
-                
+
                 for i in range(3):
                     if currentColumn == 0:
                         output[currentRow, currentColumn, i] = outputImg[currentRow, currentColumn, i]

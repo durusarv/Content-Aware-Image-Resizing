@@ -1,5 +1,5 @@
 """
-@authors: durusarv and jdlips
+@author: Duruvan Saravanan (durusarv) and Jake Lipson (jdlips)
 """
 
 import cv2
