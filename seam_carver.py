@@ -121,11 +121,15 @@ class SeamCarver:
                 for i in range(3):
                     if currentColumn == 0:
                         output[currentRow, currentColumn, i] = outputImg[currentRow, currentColumn, i]
-                        output[currentRow, currentColumn + 1, i] = np.average(outputImg[currentRow, currentColumn: currentColumn + 2, i])
+                        output[currentRow, currentColumn + 1, i] = (outputImg[currentRow, currentColumn, i] + \
+                                                                    outputImg[currentRow, currentColumn + 1, i] + \
+                                                                    outputImg[currentRow, currentColumn + 2, i]) / 3
                         output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
                     else:
                         output[currentRow, :currentColumn, i] = outputImg[currentRow, :currentColumn, i]
-                        output[currentRow, currentColumn, i] = np.average(outputImg[currentRow, currentColumn - 1: currentColumn + 1, i])
+                        output[currentRow, currentColumn, i] = (outputImg[currentRow, currentColumn - 1, i] + \
+                                                                    outputImg[currentRow, currentColumn, i] + \
+                                                                    outputImg[currentRow, currentColumn + 1, i]) / 3
                         output[currentRow, currentColumn + 1:, i] = outputImg[currentRow, currentColumn:, i]
 
             self.outputImg = np.copy(output)
