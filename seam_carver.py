@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Dec  5 19:22:28 2018
-
-@author: durus and jdlips
+@author: durusarv and jdlips
 """
 
 import numpy as np
@@ -276,17 +274,3 @@ class SeamCarver:
             self.stepImg[r,c] = [0, 0, 255]
         self.outputImageToFile("output/steps/iceberg_" + str(self.outputWidth) + "x"+ str(self.outputHeight) + "/iceberg_" + str(self.outputWidth) + "x" + str(self.outputHeight) + "_" + str(self.count) + ".jpg", self.stepImg)
         self.count += 1
-
-
-    #TODO: [X] Finish seamCarving(self):
-        #TODO: [X] Finsh removeSeams(self, seams):
-        #TODO: [X] Finish getEnergyMap(self):
-            #TODO: [X] Finish getCumulativeMaps(self, energyValues):
-                #TODO: [ ]Test getCumulativeMaps(self, energyMap)
-            #TODO: [X] start getLeastEnergySeam(self, energyValuesDown):
-                #TODO: [ ] change getLeastEnergySeam more
-            #TODO: [X] start removeSeam(self, leastEnergySeam):
-        #TODO: [X] Rotate image for changing height
-        #TODO: [X] start addSeams():
-    #TODO: [X] Test with multile images and output sizes
-    #TODO: [ ] Use with mor images and sizes

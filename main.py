@@ -1,18 +1,15 @@
 """
-Created on Wed Dec 5 22:44:37 2018
-
-@author: jdlips
+@authors: durusarv and jdlips
 """
 
 import cv2
 import numpy as np
 from seam_carver import SeamCarver
-import os
 
 def main():
     inputFilename = "input/iceberg.jpg"
-    outputWidth = 555
-    outputHeight = 310
+    outputWidth = 500
+    outputHeight = 300
     outputFilename = "output/iceberg_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
 
 
