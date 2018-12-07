@@ -58,12 +58,12 @@ class SeamCarver:
         rowSeams = self.inputHeight - self.outputHeight
         # Checking if we are removing seams or adding them to the height
         if rowSeams != 0:
-            print("hello")
             self.outputImg = cv2.rotate(self.outputImg, 0)
             self.outputHeight = np.size(self.outputImg, 0)
             self.outputWidth = np.size(self.outputImg, 1)
             self.stepImg = np.copy(self.outputImg)
             self.rotated = True
+            
             if rowSeams > 0:
                 self.removeSeams(rowSeams)
             elif rowSeams < 0:
@@ -80,7 +80,6 @@ class SeamCarver:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[0])
-            #self.removeSeam(leastEnergySeam)
             
             if (self.demo):
                 self.demoSteps(leastEnergySeam)
@@ -88,10 +87,10 @@ class SeamCarver:
             row, col = self.outputImg.shape[: 2]
             output = np.zeros((row, col - 1, 3))
             
-            for r in range(row):
-                c = leastEnergySeam[r]
+            for currentRow in range(row):
+                currentColumn = leastEnergySeam[currentRow]
                 for i in range(3):
-                    output[r, :, i] = np.delete(self.outputImg[r, :, i], [c])
+                    output[currentRow, :, i] = np.delete(self.outputImg[currentRow, :, i], [currentColumn])
                     
             self.outputImg = np.copy(output)
             self.stepImg = np.copy(self.outputImg)
@@ -110,8 +109,7 @@ class SeamCarver:
             energyMap = self.getEnergyMap()
             energyValuesDown = self.getCumulativeMaps(energyMap)
             leastEnergySeam = self.getLeastEnergySeam(energyValuesDown[1])
-            
-            #self.addSeam(leastEnergySeam)
+
             if (self.demo):
                 self.demoSteps(leastEnergySeam)
                 
@@ -238,25 +236,6 @@ class SeamCarver:
         red = self.outputImg[:,:,2]
 
         return blue, green, red
-
-    """
-    removeSeam
-    Removes a pixel layer (seam) from the image
-    @params:    leastEnergySeam: Map of the lowest energy level seam in the
-    image (seam)
-    """
-    def removeSeam(self, leastEnergySeam):
-        if (self.demo):
-            self.demoSteps(leastEnergySeam)
-
-        row, col = self.outputImg.shape[: 2]
-        output = np.zeros((row, col - 1, 3))
-        for r in range(row):
-            c = leastEnergySeam[r]
-            for i in range(3):
-                output[r, :, i] = np.delete(self.outputImg[r, :, i], [c])
-        self.outputImg = np.copy(output)
-        self.stepImg = np.copy(self.outputImg)
 
     """
     outputImageToFile
