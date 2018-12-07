@@ -13,7 +13,7 @@ def main():
     outputFilename = "output/iceberg_" + str(outputWidth) + "x" + str(outputHeight) + ".jpg"
 
 
-    sC = SeamCarver(inputFilename, outputFilename, outputWidth, outputHeight, True)
+    sC = SeamCarver(inputFilename, outputFilename, outputWidth, outputHeight)
     sC.seamCarving();
     sC.outputImageToFile(outputFilename, sC.outputImg)
     print("Done")
